@@ -9,6 +9,7 @@ namespace Cafe.BL.Model
 {/// <summary>
 /// Пол.
 /// </summary>
+ [Serializable]
      public class Gender
      {/// <summary>
      /// Название.

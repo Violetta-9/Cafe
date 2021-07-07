@@ -9,12 +9,14 @@ namespace Cafe.BL.Model
 {/// <summary>
 /// Пользоваткль
 /// </summary>
-    public class User
+[Serializable]
+public class User
     {
-        private readonly string _name;
-            /// <summary>
-            /// Имя.
-            /// </summary>
+        #region Properties
+
+        /// <summary>
+        /// Имя.
+        /// </summary>
         public string Name { get;}// только один раз устанавливаем имя при создании класса
             /// <summary>
             /// Полю
@@ -23,7 +25,7 @@ namespace Cafe.BL.Model
             /// <summary>
             /// Дата рождения.
             /// </summary>
-        public DateTime BirthDate { get; }
+        public DateTime BirdthDate { get; }
             /// <summary>
             ///Номер.
             /// </summary>
@@ -32,17 +34,18 @@ namespace Cafe.BL.Model
             /// Адрес.
             /// </summary>
         public string Addres { get; set; }
-            /// <summary>
-            /// Новый пользователь.
-            /// </summary>
-            /// <param name="name">Имя.</param>
-            /// <param name="gender">Пол.</param>
-            /// <param name="birthdate">Дата рождения.</param>
-            /// <param name="number">Номер.</param>
-            /// <param name="addres">Адрес.</param>
+            #endregion
+        /// <summary>
+        /// Новый пользователь.
+        /// </summary>
+        /// <param name="name">Имя.</param>
+        /// <param name="gender">Пол.</param>
+        /// <param name="birthdate">Дата рождения.</param>
+        /// <param name="number">Номер.</param>
+        /// <param name="addres">Адрес.</param>
         public User(string name, 
                     Gender gender, 
-                    DateTime birthdate, 
+                    DateTime birdthdate, 
                     string number, 
                     string addres)
         {
@@ -57,9 +60,9 @@ namespace Cafe.BL.Model
                 throw new ArgumentException("Gender cannot be null.", nameof(gender));
             }
 
-            if (birthdate < DateTime.Parse("01.01.1900") || birthdate>=DateTime.Now)
+            if (birdthdate < DateTime.Parse("01.01.1900") || birdthdate>=DateTime.Now)
             {
-                throw new ArgumentException("Impossible date of birth.", nameof(birthdate));
+                throw new ArgumentException("Impossible date of birth.", nameof(birdthdate));
             }
 
             if (string.IsNullOrWhiteSpace(number))
@@ -78,7 +81,7 @@ namespace Cafe.BL.Model
 
             Name = name;
             Gender = gender;
-            BirthDate = birthdate;
+            BirdthDate = birdthdate;
             Number = number;
             Addres = addres;
 
