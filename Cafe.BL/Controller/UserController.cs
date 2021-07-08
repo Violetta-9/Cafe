@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -13,20 +14,38 @@ namespace Cafe.BL.Controller
 /// </summary>
    public  class UserController
     {/// <summary>
-    /// Пользователь приложения.
-    /// </summary>
-        public User User { get; }
+     /// Пользователь приложения.
+     /// </summary>
+        public List<User> Users { get; }
+        public User CurrentUser { get; set; }
+        public bool IsNewUser { get; } = false;
+
+
         /// <summary>
         /// Создание нового контроллера пользователя.
         /// </summary>
         /// <param name="user"></param>
-        public UserController(string userName, string genderName,DateTime birdthDay,string number,string addres)
+        public UserController(string userName)
         {
-            //TODO: проверка
-            var gender = new Gender(genderName);
-            User= new User(userName, gender, birdthDay, number, addres);
-            
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentNullException("Имя пользователя не может быть пустым", nameof(userName));
+            }
+
+            Users = GetUsersData();
+
+            CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
+
+            if (CurrentUser == null)
+            {
+               
+                CurrentUser = new User(userName);
+                Users.Add(CurrentUser);
+                IsNewUser = true;
+                Save();
+            }
         }
+
         /// <summary>
         /// Сохранить данные пользователя.
         /// </summary>
@@ -35,26 +54,38 @@ namespace Cafe.BL.Controller
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream("Users.dat", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs,User);
+                formatter.Serialize(fs,Users);
             }
 
         }
         /// <summary>
-        /// Получить данные пользователя.
+        /// Получить список  пользователей из файла.
         /// </summary>
-        /// <returns>Пользователь приложения.</returns>
-        public UserController ()
+        /// <returns>Список пользователей приложения.</returns>
+        public List<User> GetUsersData()
         {
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream("Users.dat", FileMode.OpenOrCreate))
             {
-               var userLoad= formatter.Deserialize(fs) as User;// один пользователь получается 
-               if (userLoad!=null)
+               var usersLoad= formatter.Deserialize(fs) as List<User>;// один пользователь получается 
+               if (usersLoad!=null)
                {
-                   User = userLoad;
+                   return usersLoad;
                }
-               //TODO:Что делать, если пользователь не прочитан?
+
+               return new List<User>();
             }
+        }
+
+        public void SetNewUserData(string genderName, DateTime birdthDate, string number, string addres)
+        {
+            // Проверка 
+            CurrentUser.Gender = new Gender(genderName);
+            CurrentUser.BirdthDate = birdthDate;
+            CurrentUser.Number = number;
+            CurrentUser.Addres = addres;
+            Save();
+
         }
     }
 }

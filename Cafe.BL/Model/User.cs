@@ -18,14 +18,19 @@ public class User
         /// Имя.
         /// </summary>
         public string Name { get;}// только один раз устанавливаем имя при создании класса
-            /// <summary>
+        /// <summary>
             /// Полю
             /// </summary>
-        public Gender Gender { get; }
-            /// <summary>
-            /// Дата рождения.
-            /// </summary>
-        public DateTime BirdthDate { get; }
+        public Gender Gender { get; set; }
+        /// <summary>
+        /// Дата рождения.
+        /// </summary>
+          
+        //DateTime nowDate = DateTime.Today;
+        //int age = nowDate.Year - birthDate.Year;
+        //if (birthDate > nowDate.AddYears(-age)) age--;
+        public int Age { get { return DateTime.Now.Year - BirdthDate.Year; } }
+        public DateTime BirdthDate { get; set; }
             /// <summary>
             ///Номер.
             /// </summary>
@@ -87,9 +92,19 @@ public class User
 
         }
 
+        public User(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("Name cannot be null or empty.", nameof(name));
+            }
+
+            Name = name;
+        }
+
         public override string ToString()
         {
-            return Name;
+            return Name+" "+Age;
         }
     }
 }
