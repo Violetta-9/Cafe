@@ -62,16 +62,22 @@ namespace Cafe.BL.Controller
         /// Получить список  пользователей из файла.
         /// </summary>
         /// <returns>Список пользователей приложения.</returns>
-        public List<User> GetUsersData()
+        private List<User> GetUsersData()
         {
             var formatter = new BinaryFormatter();
             using (var fs = new FileStream("Users.dat", FileMode.OpenOrCreate))
             {
-               var usersLoad= formatter.Deserialize(fs) as List<User>;// один пользователь получается 
-               if (usersLoad!=null)
-               {
-                   return usersLoad;
-               }
+                if (fs.Length > 0)
+                {
+                    var usersLoad = formatter.Deserialize(fs) as List<User>;// один пользователь получается 
+                    if (usersLoad != null)//избежать десериализации пустого потока 
+                    {
+                        return usersLoad;
+                    }
+                }
+
+                
+               
 
                return new List<User>();
             }
