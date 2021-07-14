@@ -1,4 +1,7 @@
 ﻿using System;
+using System.CodeDom.Compiler;
+using System.Globalization;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Cafe.BL;
@@ -11,9 +14,13 @@ namespace Cafe.CMD
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to the cafe app");
 
-            Console.WriteLine("Enter username");
+            var culture = CultureInfo.CreateSpecificCulture("en-us");
+            var resourceManager = new ResourceManager("Cafe.CMD.Languages.Message", typeof(Program).Assembly);
+
+            Console.WriteLine(resourceManager.GetString("hello", culture));
+
+            Console.WriteLine(resourceManager.GetString("enterName", culture));
             var name = Console.ReadLine();
 
             
