@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Cafe.BL;
 using Cafe.BL.Controller;
-
+using Cafe.BL.Model;
 
 namespace Cafe.CMD
 {
@@ -17,6 +18,7 @@ namespace Cafe.CMD
 
             
             var userController = new UserController(name);
+            var ordercontroller = new OrderController(userController.CurrentUser);
             
             if (userController.IsNewUser)
             {
@@ -35,8 +37,39 @@ namespace Cafe.CMD
             }
 
             Console.WriteLine(userController.CurrentUser);
+            Console.WriteLine("What do you want to do?");
+            Console.WriteLine("E-introduce product.");
+            
+            var key = Console.ReadKey();
+            Console.WriteLine();
+            if (key.Key == ConsoleKey.E)
+            {
+                var foods = EnterOrder();
+
+                ordercontroller.Add(foods.Food,4);
+                foreach (var item in ordercontroller.Order.Foods)
+                {
+                    Console.WriteLine($"{item.Key}-{item.Value}");
+                    
+                }
+            }
 
         }
+
+        public static (Food Food,double quantity) EnterOrder()
+        {
+            Console.WriteLine("Enter product name.");
+            var foodname = Console.ReadLine();
+            var proteins = ParseDouble("proteins");
+            var fats = ParseDouble("fats");
+            var carbohydrates = ParseDouble("carbohydrates");
+            var calories = ParseDouble("calories");
+            var price = ParseDouble("price");
+            var food = new Food(foodname, proteins, fats, carbohydrates, calories, price);
+            return (food,7);
+
+        }
+
         private static DateTime ParseDateTime(string value)
         {
             DateTime birthDate;
@@ -54,6 +87,21 @@ namespace Cafe.CMD
             }
 
             return birthDate;
+        }
+        private static double ParseDouble(string name)
+        {
+            while (true)
+            {
+                Console.Write($"Enter {name}: ");
+                if (double.TryParse(Console.ReadLine(), out double value))
+                {
+                    return value;
+                }
+                else
+                {
+                    Console.WriteLine($"Неверный формат поля {name}");
+                }
+            }
         }
     }
 }

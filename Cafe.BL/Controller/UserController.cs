@@ -12,10 +12,12 @@ namespace Cafe.BL.Controller
 {/// <summary>
 /// Контроллер пользователя.
 /// </summary>
-   public  class UserController
-    {/// <summary>
-     /// Пользователь приложения.
-     /// </summary>
+   public  class UserController: ControllerBase
+{
+    private const string USER_FILE_NAME = "Users.dat";
+        /// <summary>
+        /// Пользователь приложения.
+        /// </summary>
         public List<User> Users { get; }
         public User CurrentUser { get; set; }
         public bool IsNewUser { get; } = false;
@@ -51,12 +53,8 @@ namespace Cafe.BL.Controller
         /// </summary>
         public void Save()
         {
-            var formatter = new BinaryFormatter();
-            using (var fs = new FileStream("Users.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs,Users);
-            }
-
+            Save(USER_FILE_NAME, Users);
+            
         }
         /// <summary>
         /// Получить список  пользователей из файла.
@@ -64,23 +62,8 @@ namespace Cafe.BL.Controller
         /// <returns>Список пользователей приложения.</returns>
         private List<User> GetUsersData()
         {
-            var formatter = new BinaryFormatter();
-            using (var fs = new FileStream("Users.dat", FileMode.OpenOrCreate))
-            {
-                if (fs.Length > 0)
-                {
-                    var usersLoad = formatter.Deserialize(fs) as List<User>;// один пользователь получается 
-                    if (usersLoad != null)//избежать десериализации пустого потока 
-                    {
-                        return usersLoad;
-                    }
-                }
-
-                
-               
-
-               return new List<User>();
-            }
+           return Load<List<User>>(USER_FILE_NAME) ?? new List<User>();
+           
         }
 
         public void SetNewUserData(string genderName, DateTime birdthDate, string number, string addres)

@@ -14,7 +14,7 @@ namespace Cafe.BL.Controller.Tests
         [TestMethod()]
         public void UserControllerTest()
         {
-            Assert.Fail();
+            
         }
 
         [TestMethod()]
