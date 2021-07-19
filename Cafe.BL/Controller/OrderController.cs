@@ -12,17 +12,15 @@ namespace Cafe.BL.Controller
 {
    public class OrderController:ControllerBase
    {
-       private const string FOODS_FILE_NAME = "Foods.dat";
-       private const string ORDERS_FILE_NAME = "Orders.dat";
         private readonly User user;
        public List<Food> Foods { get; }
-       public Order Order { get; }
+       public Order Orders { get; }
 
        public OrderController(User user)
        {
            this.user = user ?? throw new ArgumentNullException("Username cannot be null or empty.", nameof(user));
            Foods = GetAllFoods();
-           Order = GetOrder();
+           Orders = GetOrder();
        }
 
        public bool Add(Food foodName,double quantity)
@@ -30,7 +28,7 @@ namespace Cafe.BL.Controller
            var food=Foods.SingleOrDefault(f => f.Name == foodName.Name);
            if (food != null)
            {
-                Order.Add(food, quantity);
+                Orders.Add(food, quantity);
                 Save();
                 return true;
            }
@@ -47,18 +45,18 @@ namespace Cafe.BL.Controller
 
        private List<Food> GetAllFoods()
        {
-           return Load<List<Food>>(FOODS_FILE_NAME) ?? new List<Food>();
+           return Load<Food>() ?? new List<Food>();
        }
        private Order GetOrder()
        {
-           return Load<Order>(ORDERS_FILE_NAME) ?? new Order(user);
+           return Load<Order>().FirstOrDefault() ?? new Order(user);
        }
 
         private void Save()
        {
-           Save(FOODS_FILE_NAME,Foods);
-           Save(ORDERS_FILE_NAME,Order);
-       }
+           Save(Foods);
+           Save(new List<Order>() { Orders });
+        }
 
    }
 }

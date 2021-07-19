@@ -10,22 +10,24 @@ namespace Cafe.BL.Model
 /// Пользоваткль
 /// </summary>
 [Serializable]
-public class User
-    {
-        #region Properties
+public class User 
+{
 
+        #region Properties
+        public int Id { get; set; }
         /// <summary>
         /// Имя.
         /// </summary>
-        public string Name { get;}// только один раз устанавливаем имя при создании класса
+        public string Name { get; set; }// только один раз устанавливаем имя при создании класса
         /// <summary>
             /// Полю
             /// </summary>
         public Gender Gender { get; set; }
+        public int? GenderId { get; set; }
         /// <summary>
         /// Дата рождения.
         /// </summary>
-          
+
         //DateTime nowDate = DateTime.Today;
         //int age = nowDate.Year - birthDate.Year;
         //if (birthDate > nowDate.AddYears(-age)) age--;
@@ -39,7 +41,7 @@ public class User
             /// Адрес.
             /// </summary>
         public string Addres { get; set; }
-            #endregion
+        #endregion
         /// <summary>
         /// Новый пользователь.
         /// </summary>
@@ -48,6 +50,14 @@ public class User
         /// <param name="birthdate">Дата рождения.</param>
         /// <param name="number">Номер.</param>
         /// <param name="addres">Адрес.</param>
+     
+       
+        public virtual ICollection<Order> Orders { get; set; }
+
+        public User()
+        {
+        }
+
         public User(string name, 
                     Gender gender, 
                     DateTime birdthdate, 
