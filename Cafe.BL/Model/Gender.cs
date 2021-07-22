@@ -11,20 +11,15 @@ namespace Cafe.BL.Model
 /// </summary>
  [Serializable]
      public class Gender
-    {
-        public int Id { get; set; }
-        /// <summary>
-        /// Название.
-        /// </summary>
-        public string Name { get;set; }
-        public virtual ICollection<User> Users { get; set; }
-
-        public Gender() { }
-        /// <summary>
-        /// Создать новый пол.
-        /// </summary>
-        /// <param name="name">Имя поля.</param>
-        public Gender(string name)
+     {/// <summary>
+     /// Название.
+     /// </summary>
+         public string Name { get; }
+     /// <summary>
+     /// Создать новый пол.
+     /// </summary>
+     /// <param name="name">Имя поля.</param>
+         public Gender(string name)
          {
              if (string.IsNullOrEmpty(name))
              {

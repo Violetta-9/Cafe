@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +14,7 @@ namespace Cafe.BL.Controller
 /// </summary>
    public  class UserController: ControllerBase
 {
-    
+    private const string USER_FILE_NAME = "Users.dat";
         /// <summary>
         /// Пользователь приложения.
         /// </summary>
@@ -23,12 +22,11 @@ namespace Cafe.BL.Controller
         public User CurrentUser { get; set; }
         public bool IsNewUser { get; } = false;
 
-        
+
         /// <summary>
         /// Создание нового контроллера пользователя.
         /// </summary>
         /// <param name="user"></param>
-        
         public UserController(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -46,6 +44,7 @@ namespace Cafe.BL.Controller
                 CurrentUser = new User(userName);
                 Users.Add(CurrentUser);
                 IsNewUser = true;
+                Save();
             }
         }
 
@@ -54,7 +53,7 @@ namespace Cafe.BL.Controller
         /// </summary>
         public void Save()
         {
-            Save (CurrentUser);
+            Save(USER_FILE_NAME, Users);
             
         }
         /// <summary>
@@ -63,7 +62,7 @@ namespace Cafe.BL.Controller
         /// <returns>Список пользователей приложения.</returns>
         private List<User> GetUsersData()
         {
-           return Load<User>() ?? new List<User>();
+           return Load<List<User>>(USER_FILE_NAME) ?? new List<User>();
            
         }
 

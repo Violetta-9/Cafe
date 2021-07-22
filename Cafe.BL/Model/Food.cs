@@ -7,30 +7,26 @@ using System.Threading.Tasks;
 namespace Cafe.BL.Model
 {[Serializable]
      public class Food
-     {
-         public int Id { get; set; }
-        public string Name { get; set; }
+    {
+        public string Name { get; }
         /// <summary>
         /// Белок.
         /// </summary>
-        public double Proteins{get; set; }
+        public double Proteins{get;}
         /// <summary>
         /// Жиры.
         /// </summary>
-        public double Fats { get; set; }
+        public double Fats { get; }
         /// <summary>
         /// Углеводы.
         /// </summary>
-        public double Carbohydrates { get; set; }
+        public double Carbohydrates { get; }
         /// <summary>
         /// Калории за 100г продукта
         /// </summary>
-        public double Calories { get; set; }
+        public double Calories { get; }
 
         public double Price { get; set; }
-        public virtual Order Order{ get; set; }
-
-        public Food() { }
         public Food(string foodName):this (foodName,0,0,0,0,0){}
         
 
