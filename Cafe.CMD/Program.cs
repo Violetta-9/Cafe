@@ -46,21 +46,29 @@ namespace Cafe.CMD
             Console.WriteLine(userController.CurrentUser);
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("E-introduce product.");
+            Console.WriteLine("Q-exit.");
+            
             
             var key = Console.ReadKey();
             Console.WriteLine();
-            if (key.Key == ConsoleKey.E)
+            switch (key.Key)
             {
-                var foods = EnterOrder();
+                case ConsoleKey.E:
+                    var foods = EnterOrder();
 
-                ordercontroller.Add(foods.Food,4);
-                foreach (var item in ordercontroller.Order.Foods)
-                {
-                    Console.WriteLine($"{item.Key}-{item.Value}");
-                    
-                }
+                    ordercontroller.Add(foods.Food, 4);
+                    foreach (var item in ordercontroller.Orders.Foods)
+                    {
+                        Console.WriteLine($"{item.Key}-{item.Value}");
+
+                    }
+                    break;
+                case ConsoleKey.Q:
+                    Environment.Exit(0);
+                    break;
             }
 
+            Console.ReadLine();
         }
 
         public static (Food Food,double quantity) EnterOrder()
