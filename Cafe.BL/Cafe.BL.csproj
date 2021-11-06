@@ -58,7 +58,7 @@
     <Compile Include="Controller\OrderController.cs" />
     <Compile Include="Controller\SerializableDataSaver.cs" />
     <Compile Include="Controller\UserController.cs" />
-    <Compile Include="Model\Administrator.cs" />
+    <Compile Include="Model\Food.cs" />
     <Compile Include="Model\Gender.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\User.cs" />

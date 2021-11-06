@@ -6,34 +6,41 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Cafe.BL.Controller
 {
-     class SerializableDataSaver : IDataSaver
+    class SerializableDataSaver : IDataSaver
     {
         public List<T> Load<T>() where T : class
         {
             var formatter = new BinaryFormatter();
             var fileName = typeof(T).Name;
+
             using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
-                if (fs.Length > 0)
+                if (fs.Length > 0 && formatter.Deserialize(fs) is List<T> items)
                 {
-                    var item = formatter.Deserialize(fs) as List<T>;
-                    if (item != null)//избежать десериализации пустого потока 
-                    {
-                        return item;
-                    }
+                    return items;
                 }
-                return new List<T>();
+                else
+                {
+                    return new List<T>();
+                }
             }
         }
 
-        public void Save<T>(T item) where T: class
+        public void Save<T>(List<T> item) where T : class
         {
             var formatter = new BinaryFormatter();
             var fileName = typeof(T).Name;
+
             using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
                 formatter.Serialize(fs, item);
             }
         }
+
+        public void Save<T>(T item) where T : class
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }

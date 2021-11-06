@@ -21,13 +21,16 @@ namespace Cafe.BL.Controller
 
         public void Save<T>(T item) where T:class
         {
+           
+        }
+
+        public void Save<T>(List<T> item) where T : class
+        {
             using (var db = new CafeContext())
             {
-                db.Set<T>().Add(item);
+                db.Set<T>().AddRange(item);
                 db.SaveChanges();
             }
         }
-
-        
     }
 }

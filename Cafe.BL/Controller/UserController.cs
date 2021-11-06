@@ -54,7 +54,7 @@ namespace Cafe.BL.Controller
         /// </summary>
         public void Save()
         {
-            Save (CurrentUser);
+            Save (Users);
             
         }
         /// <summary>
